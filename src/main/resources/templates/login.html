@@ -1,0 +1,27 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Login form</title>
+  <link href="/main.css" rel="stylesheet">
+</head>
+<body>
+
+<th:block th:if="${#request.getRemoteUser() != null}"
+          th:text="${#request.getRemoteUser()}"></th:block>
+
+<form method="post" action="/login">
+  <label for="username">Username:</label>
+  <input type="text" id="username" name="username"></br>
+
+  <label for="password">Password:</label>
+  <input type="password" id="password" name="password"></br>
+
+  <div>
+    <div th:text="${param.error}"></div>
+  </div>
+
+  <input id="submit" type="submit" value="Sign in">
+</form>
+<a href="/register" class="btn btn-block btn-light">Register here</a>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Course</title>
+
+    <style>
+        input{
+            margin-left: 20px;
+        }
+        #submit{
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<!--    <div>-->
+<!--        <select name="courseType" id="courseType" th:selected="${course} != null ? ${course.courseType} : ''">-->
+<!--            <option th:each="courseType : ${courseTypes}" th:value="${courseType}" th:text="${courseType}">-->
+<!--        </select>-->
+<!--    </div>-->
+
+    <form th:method="post" th:action="@{/courses/add}">
+        <label for="name">Name: </label>
+        <input id="name" type="text" name="name" th:value="${course} != null ? ${course.name} : ''"><br>
+
+        <label for="description">Description: </label>
+        <input id="description" type="text" name="description" th:value="${course} != null ? ${course.description} : ''"><br>
+
+        <select name="courseType" id="courseType" th:selected="${course} != null ? ${course.courseType} : ''">
+            <option th:each="courseType : ${courseTypes}" th:value="${courseType}" th:text="${courseType}">
+        </select>
+
+        <select name="teacherId" id="teacherId" th:selected="${course} != null ? ${course.teacher.id} : ''">
+            <option th:each="teacher : ${teachers}" th:value="${teacher.id}" th:text="${teacher.fullName.name}"></option>
+<!--            <option th:each="teacher : ${teachers}" th:value="${teacher.id}" th:text="${teacher.fullName}" th:selected="${course != null && course.teacher.id == teacher.id}"></option>-->
+        </select>
+
+        <input id='courseEditId' type='hidden' name='courseEditId' th:value="${course} != null ? ${course.courseId} : ''"/><br/>
+        <input type='submit' id="submit" value='Submit'/>
+
+    </form>
+</body>
+</html>

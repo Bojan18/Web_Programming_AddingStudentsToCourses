@@ -1,0 +1,75 @@
+<html xmlns:th="http://thymeleaf.org">
+<!-- xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+-->
+<head>
+    <meta charset="utf-8">
+    <title>Welcome and Choose a Course</title>
+</head>
+<body>
+<th:block>
+<header>
+    <h1>Courses List</h1>
+</header>
+<main>
+    <h2>Choose course:</h2>
+    <th:block th:if="${#request.getRemoteUser() != null}"
+              th:text="${#request.getRemoteUser()}"></th:block>
+
+    <form th:method="POST" th:action="@{/courses/filter}">
+        <div>
+            <select name="courseType">
+                <option th:each="courseType : ${courseTypes}" th:value="${courseType}" th:text="${courseType}">
+            </select>
+            <button type="submit">Filter</button>
+        </div>
+    </form>
+
+    <form th:method="post" th:action="@{/courses}">
+        <div th:each="course : ${courses}">
+            <input type="radio" name="courseId" th:value="${course.courseId}">
+            <label th:for="${course.courseId}" th:text="${course.name}"></label>
+
+            <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+            <a class="editBtns" th:href="@{'/courses/edit-form/{id}' (id=${course.courseId})}" >Edit</a>
+
+
+            <button class="deleteBtns" type="submit" name="delete" form="deleteForm">Delete</button>
+            </th:block>
+            <!--            <a th:href="@{'/courses/delete/{id}' (id=${course.courseId})}"><button>Delete</button></a>-->
+        </div>
+        <br/>
+        <input type="submit" name="submit" value="Submit">
+    </form>
+
+
+    <div th:each="course : ${courses}">
+    <form id="deleteForm" th:method="POST" th:action="@{'/courses/delete/{id}' (id=${course.courseId})}">
+    </form>
+    </div>
+
+<!--    <div>-->
+<!--        <form th:method="POST" th:action="@{/courses/delete/{id}}">-->
+<!--            <a th:href="@{'/courses/delete/{id}' (id=${course.courseId})}" >Delete</a>-->
+<!--        </form>-->
+<!--    </div>-->
+
+    <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+    <div>
+        <form th:method="post" th:action="@{/courses/add-form}">
+            <a class="addBtns" th:href="@{'/courses/add-form'}">Add course</a>
+        </form>
+    </div>
+    </th:block>
+
+    <div th:if="${hasErrors}" class="error">
+        <div th:text="${errors}"></div>
+    </div>
+
+    <a href="/login">Logout</a>
+    <a href="/login">Login</a>
+
+
+</main>
+</th:block>
+</body>
+</html>
